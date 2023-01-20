@@ -1,0 +1,23 @@
+# Ignore the sensitive data stored in .env file
+.env
+
+# Ignore the vscode file
+.vscode/
+
+# Ignore the db file
+db.sqlite3
+
+# Ignore the init.py file
+__init__.py
+
+# Ignore the log file
+*.log
+
+# Ignore the pycache
+__pycache__/
+
+# Ignore the migration
+migrations/
+
+
+
