@@ -2,14 +2,14 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
 import requests
+from django.conf import settings
 
-# Create your views here.
+key = settings.APP_ID
 
 def index(request):
     # define the temlate name
     template = 'index.html'
-    url = "https://openexchangerates.org/api/latest.json"
-    key = "e64888fb29ea48bd8704b52f0cbeb1e3"
+    url = settings.EXCHANGE_URL + "latest.json"
 
     if request.method == 'POST':
 
@@ -34,9 +34,7 @@ def index(request):
 def historical(request):
     # specify the templaet name
     template = 'historical.html'
-    url = "https://openexchangerates.org/api/historical"
-    key = "e64888fb29ea48bd8704b52f0cbeb1e3"
-
+    url = settings.EXCHANGE_URL + "historical"
 
     if request.method == 'POST':
         # extract date from the post request
