@@ -19,6 +19,18 @@
                    <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
             </form>
+            <br>
+
+            <div id="rate" style="text-align-last: left; font-size: 20px; font-weight:900">
+                {% if is_error %}
+                    {{ rate }}
+                {% else %}
+    
+                {% endif %}
+            </div>
+
+            <br>
+
             <table class="table table-bordered">
                 <thead>
                 <tr>

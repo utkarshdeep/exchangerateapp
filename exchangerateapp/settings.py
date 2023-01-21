@@ -11,7 +11,10 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
-from decouple import config
+from decouple import config, UndefinedValueError
+import logging
+import logging.config
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -19,9 +22,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
-
-APP_ID = config('APP_ID')
-EXCHANGE_URL = config('EXCHANGE_URL')
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-jb0-d=)+4!cu*j*5i%e-oy1i-^jg8eq^4ks6jlvdpx3ed@tu9n'
@@ -128,3 +128,56 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+        'file_core': {
+            'class': 'logging.FileHandler',
+            'formatter': 'verbose',
+            'level': 'WARNING',
+            'filename': 'exchangerateapp-core.log'
+        },
+        'file_settings': {
+            'class': 'logging.FileHandler',
+            'formatter': 'verbose',
+            'level': 'WARNING',
+            'filename': 'exchangerateapp-settings.log'
+        }
+    },
+    'loggers': {
+        'exchangerateapp.core.views.py': {
+            'handlers': ['console', 'file_core'],
+            'level': 'INFO'
+        },
+        'exchangerateapp.settings.py': {
+            'handlers': ['console', 'file_settings'],
+            'level': 'INFO'
+        }
+    }
+}
+
+logging.config.dictConfig(LOGGING)
+logger = logging.getLogger('exchangerateapp.settings.py')
+
+try:
+    APP_ID = config('APP_ID')
+    EXCHANGE_URL = config('EXCHANGE_URL')
+except UndefinedValueError as e:
+    logger.error("The keys defined in .env file is incorrect or file .env is missing. Ensure it is named as -- APP_ID and EXCHANGE_URL")
+    raise SystemExit(e)

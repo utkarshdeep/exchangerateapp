@@ -132,9 +132,13 @@
                <button type="submit" class="btn btn-primary">Submit</button>
            </form>
            <br>
-           <!-- <div id="rate" style="text-align-last: right; font-size: 20px; font-weight:900">
-               Conversion Rate: {{ rate }}
-           </div> -->
+           <div id="rate" style="text-align-last: left; font-size: 20px; font-weight:900">
+            {% if is_error %}
+                {{ rate }}
+            {% else %}
+
+            {% endif %}
+           </div>
        </div>
    </div>
 </div>
@@ -147,8 +151,12 @@
        </div>
        <div class="card-body">  
            <!-- Notice how we bring in the response data sent as we render the same page by the request -->
-           <textarea class="form-control "name="translated" id="translated" cols="30" rows="8" style="text-align-last: right; font-size: 30px; font-weight:900">
-                   {{ rate }}                              
+           <textarea class="form-control "name="translated" id="translated" cols="30" rows="8" style="text-align-last: left; font-size: 30px; font-weight:900">
+            {% if is_error %}
+                Error occured.
+            {% else %}
+                {{ rate }}
+            {% endif %}                           
            </textarea>                  
        </div>
    </div>
