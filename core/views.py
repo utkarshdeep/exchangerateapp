@@ -18,7 +18,7 @@ except AttributeError as e:
 def index(request):
     # define the temlate name
     template = 'index.html'
-    url = base_url + "latest.json"
+    url = base_url + "latest"
 
     if request.method == 'POST':
 
@@ -45,7 +45,7 @@ def index(request):
         # response data convterted to json
         data = response.json()
         rate = data['rates'][target_currency]
-        context = {"is_error": False, "rate": rate}
+        context = {"is_error": False, "rate": f"1 {base_currency} = {rate} {target_currency}"}
 
         # render the template with the data passed to it
         return render(request, template, context)
@@ -56,17 +56,22 @@ def index(request):
 def historical(request):
     # specify the templaet name
     template = 'historical.html'
-    url = base_url + "historical"
+    # url = base_url + "historical"
 
     if request.method == 'POST':
 
         logger.info("User has requested the latest ER page WITH POST request.")
 
         # extract date from the post request
-        date = request.POST.get('date', False)   
+        date = request.POST.get('date', False)
+        # base currency
+        base_currency = request.POST.get('currency1', False)
+
+        # target currency
+        target_currency = request.POST.get('currency2', False)   
 
         try:
-            response = requests.get(f"{url}/{date}.json?app_id={key}")
+            response = requests.get(f"{base_url}/{date}?base={base_currency}&symbols={target_currency}")
             response.raise_for_status()
         except requests.exceptions.HTTPError as e:
             error = response.json()['message']
@@ -76,7 +81,6 @@ def historical(request):
         except requests.exceptions.RequestException as err:
             logger.info("An unexpected error has been encoutered: ", err.strerror)
             raise SystemError(err)
-
 
         logger.info(f"The API request to external service openexchangerates to fetch exchange rate on {date} against USD has been completed successfuly.")
 
