@@ -86,8 +86,8 @@ def historical(request):
 
         # convert the response data to json
         data = response.json()
-        quotes = data['rates']
-        context = {"is_error": False, 'quotes': quotes}
+        rate = data['rates'][target_currency]
+        context = {"is_error": False, "rate": f"ON {date} --> 1 {base_currency} = {rate} {target_currency}"}
 
         # Passing the data to the temlate
         return render(request, template, context)

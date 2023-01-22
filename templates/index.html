@@ -1,11 +1,10 @@
 {% extends 'base.html' %}
  
 {% block content %}
-<!-- enter text to granlate area -->
 <div class="col-sm-6">
    <div class="card">
        <div class="card-header" style="background-color: #02a86b;">
-           <h5 class="card-title text-light">Fill the Details to convert</h5>
+           <h5 class="card-title text-light">Fill the Details to get exchange rate</h5>
        </div>
        <div class="card-body">
            <form action="{% url 'index' %}" method="POST">
@@ -123,10 +122,6 @@
                    </select>
                </div>
                <br>
-               <!-- <div class="form-group">
-                   <label for="exampleFormControlTextarea1">Enter Amount</label>
-                   <input class="form-control" id="amount-one" name="amount" value="1" rows="5"></input>
-               </div> -->
               <br>
               <br>
                <button type="submit" class="btn btn-primary">Submit</button>
@@ -143,14 +138,12 @@
    </div>
 </div>
 
-<!-- Transtalated text area -->
 <div class="col-sm-6">
    <div class="card">
        <div class="card-header bg-primary">
            <h5 class="card-title text-light">Exchange rate value</h5>
        </div>
        <div class="card-body">  
-           <!-- Notice how we bring in the response data sent as we render the same page by the request -->
            <textarea class="form-control "name="translated" id="translated" cols="30" rows="8" style="text-align-last: left; font-size: 30px; font-weight:900">
             {% if is_error %}
                 Error occured.
